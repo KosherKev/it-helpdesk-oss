@@ -36,17 +36,6 @@ export const register = async (req, res) => {
     errorResponse(res, error.message, 500)
   }
 }
-import jwt from 'jsonwebtoken'
-import User from '../models/User.js'
-import config from '../config/environment.js'
-import { successResponse, errorResponse } from '../utils/response.js'
-import logger from '../utils/logger.js'
-
-const generateToken = (userId) => {
-  return jwt.sign({ userId }, config.JWT_SECRET, {
-    expiresIn: config.JWT_EXPIRES_IN
-  })
-}
 
 export const login = async (req, res) => {
   try {
