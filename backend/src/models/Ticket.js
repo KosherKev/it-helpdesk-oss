@@ -3,8 +3,7 @@ import mongoose from 'mongoose'
 const ticketSchema = new mongoose.Schema({
   ticketNumber: {
     type: String,
-    unique: true,
-    required: true
+    unique: true
   },
   title: {
     type: String,
@@ -75,5 +74,14 @@ ticketSchema.pre('save', function(next) {
   }
   next()
 })
+
+// Transform output
+ticketSchema.methods.toJSON = function() {
+  const obj = this.toObject()
+  obj.id = obj._id
+  delete obj._id
+  delete obj.__v
+  return obj
+}
 
 export default mongoose.model('Ticket', ticketSchema)
