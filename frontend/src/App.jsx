@@ -5,11 +5,13 @@ import { useAuthStore } from "@stores/authStore";
 // Auth pages
 import Login from "@pages/Login";
 import Register from "@pages/Register";
+import Unauthorized from "@pages/Unauthorized";
+import ProtectedRoute from "@/routes/protectedRoutes";
 
 //Layout pages
 import CustomerLayout from "@layouts/CustomerLayout";
 import AdminLayout from "@layouts/AdminLayout";
-import TechnicianLayout from "@layouts/technicianLayout";
+import TechnicianLayout from "@layouts/TechnicianLayout";
 
 // Shared pages
 import Dashboard from "@pages/Dashboard";
@@ -27,27 +29,6 @@ import AdminDashboard from "@pages/AdminDashboard";
 import AdminAllTickets from "@pages/AdminAllTickets";
 import AssignTickets from "@pages/AssignTickets";
 import Reports from "@pages/Reports";
-
-
-
-
-
-/* Protected Route with Role Support */
-const ProtectedRoute = ({ children, allowedRoles }) => {
-  const { token, user } = useAuthStore();
-
-  // Not logged in
-  if (!token || !user) {
-    return <Navigate to="/login" replace />;
-  }
-
-  // Role not allowed
-  if (allowedRoles && !allowedRoles.includes(user.role)) {
-    return <Navigate to="/unauthorized" replace />;
-  }
-
-  return children;
-};
 
 function App() {
   return (

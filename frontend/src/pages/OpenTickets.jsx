@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import api from "../services/api";
-import useAuthStore from "../stores/authStore";
+import { useAuthStore } from "@stores/authStore";
 
 const OpenTickets = () => {
   const { user } = useAuthStore();
