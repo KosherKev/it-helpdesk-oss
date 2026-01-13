@@ -17,10 +17,10 @@ const AssignTickets = () => {
     const fetchData = async () => {
       try {
         const ticketsRes = await api.get("/tickets/unassigned");
-        setTickets(ticketsRes.data);
+        setTickets(ticketsRes.data?.tickets || []);
 
         const techRes = await api.get("/users?role=technician");
-        setTechnicians(techRes.data);
+        setTechnicians(techRes.data?.users || []);
       } catch (err) {
         console.error("Error loading assignment data:", err);
       } finally {
