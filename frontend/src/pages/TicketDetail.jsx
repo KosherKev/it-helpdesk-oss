@@ -225,7 +225,7 @@ export default function TicketDetail() {
                         <option value="" disabled>Choose a technician...</option>
                         {technicians.map(tech => (
                             <option key={tech._id} value={tech._id}>
-                                {tech.fullName} ({tech.department})
+                                {tech.fullName || tech.username || tech.email} {tech.department ? `(${tech.department})` : ''}
                             </option>
                         ))}
                     </select>
@@ -259,12 +259,12 @@ export default function TicketDetail() {
                         <div key={comment._id} className="flex space-x-3">
                             <div className="flex-shrink-0">
                                 <div className="w-8 h-8 rounded-full bg-primary-100 flex items-center justify-center text-primary-700 font-bold text-sm">
-                                    {comment.user?.fullName?.charAt(0) || 'U'}
+                                    {comment.user?.fullName?.charAt(0) || comment.user?.username?.charAt(0) || 'U'}
                                 </div>
                             </div>
                             <div className="flex-1 bg-gray-50 rounded-lg p-4">
                                 <div className="flex justify-between items-center mb-2">
-                                    <span className="font-medium text-gray-900">{comment.user?.fullName}</span>
+                                    <span className="font-medium text-gray-900">{comment.user?.fullName || comment.user?.username}</span>
                                     <span className="text-xs text-gray-500">
                                         {format(new Date(comment.createdAt), 'MMM d, HH:mm')}
                                     </span>
@@ -312,7 +312,7 @@ export default function TicketDetail() {
                     <div>
                         <dt className="text-sm font-medium text-gray-500">Created By</dt>
                         <dd className="mt-1 text-sm text-gray-900">
-                            {ticket.createdBy?.fullName || 'Unknown'}
+                            {ticket.createdBy?.fullName || ticket.createdBy?.username || 'Unknown'}
                             <br/>
                             <span className="text-gray-400 text-xs">{ticket.createdBy?.email}</span>
                         </dd>
@@ -322,7 +322,7 @@ export default function TicketDetail() {
                         <dd className="mt-1 text-sm text-gray-900">
                             {ticket.assignedTo ? (
                                 <>
-                                    {ticket.assignedTo.fullName}
+                                    {ticket.assignedTo.fullName || ticket.assignedTo.username}
                                     <br/>
                                     <span className="text-gray-400 text-xs">{ticket.assignedTo.email}</span>
                                 </>

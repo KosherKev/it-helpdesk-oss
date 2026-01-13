@@ -55,16 +55,16 @@ const AdminAllTickets = () => {
               </tr>
             ) : (
               tickets.map(ticket => (
-                <tr key={ticket._id} className="border-t hover:bg-gray-50">
+                <tr key={ticket._id || ticket.id} className="border-t hover:bg-gray-50">
                   <td className="p-3">
                     <Link 
-                      to={`/tickets/${ticket._id}`}
+                      to={`/tickets/${ticket._id || ticket.id}`}
                       className="text-blue-600 hover:underline"
                     >
-                      {ticket.ticketNumber || ticket._id.slice(-6)}
+                      {ticket.ticketNumber || ticket.id.slice(-6)}
                     </Link>
                   </td>
-                  <td className="p-3">{ticket.title}</td>
+                  <td className="p-3">{ticket.title || 'No Title'}</td>
                   <td className="p-3">
                     <span className={`px-2 py-1 rounded-full text-xs font-medium 
                       ${ticket.status === 'open' ? 'bg-blue-100 text-blue-800' : 

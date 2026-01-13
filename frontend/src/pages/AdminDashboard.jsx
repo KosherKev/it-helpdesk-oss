@@ -121,10 +121,10 @@ export default function AdminDashboard() {
             <div className="bg-white rounded-lg shadow p-6">
                 <h2 className="font-semibold text-gray-800 mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-2 gap-4">
-                    <Link to="/users" className="p-4 bg-blue-50 rounded-lg text-center hover:bg-blue-100 transition">
+                    <Link to="/admin/users" className="p-4 bg-blue-50 rounded-lg text-center hover:bg-blue-100 transition">
                         <span className="block text-blue-700 font-semibold">Manage Users</span>
                     </Link>
-                    <Link to="/reports" className="p-4 bg-purple-50 rounded-lg text-center hover:bg-purple-100 transition">
+                    <Link to="/admin/reports" className="p-4 bg-purple-50 rounded-lg text-center hover:bg-purple-100 transition">
                         <span className="block text-purple-700 font-semibold">View Reports</span>
                     </Link>
                 </div>

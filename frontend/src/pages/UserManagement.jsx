@@ -132,10 +132,10 @@ export default function UserManagement() {
                     <td className="px-6 py-4 whitespace-nowrap">
                       <div className="flex items-center">
                         <div className="flex-shrink-0 h-10 w-10 bg-primary-100 rounded-full flex items-center justify-center text-primary-600 font-bold">
-                          {user.fullName?.charAt(0) || 'U'}
+                          {user.fullName?.charAt(0) || user.username?.charAt(0) || 'U'}
                         </div>
                         <div className="ml-4">
-                          <div className="text-sm font-medium text-gray-900">{user.fullName}</div>
+                          <div className="text-sm font-medium text-gray-900">{user.fullName || user.username}</div>
                           <div className="text-sm text-gray-500">{user.email}</div>
                         </div>
                       </div>
@@ -184,7 +184,7 @@ export default function UserManagement() {
       {showEditModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
           <div className="bg-white rounded-lg p-6 w-full max-w-md">
-            <h2 className="text-xl font-bold mb-4">Edit User: {editingUser?.fullName}</h2>
+            <h2 className="text-xl font-bold mb-4">Edit User: {editingUser?.fullName || editingUser?.username}</h2>
             
             <div className="space-y-4">
               <div>

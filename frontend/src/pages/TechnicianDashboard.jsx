@@ -109,9 +109,9 @@ export default function TechnicianDashboard() {
                 <tr><td colSpan="6" className="p-4 text-center text-gray-500">No assigned tickets found</td></tr>
               ) : (
                 tickets.map(ticket => (
-                  <tr key={ticket._id} className="hover:bg-gray-50">
+                  <tr key={ticket._id || ticket.id} className="hover:bg-gray-50">
                     <td className="p-3 font-mono text-gray-600">{ticket.ticketNumber}</td>
-                    <td className="p-3 font-medium text-gray-900">{ticket.title}</td>
+                    <td className="p-3 font-medium text-gray-900">{ticket.title || 'No Title'}</td>
                     <td className="p-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityColor(ticket.priority)}`}>
                             {ticket.priority?.toUpperCase() || ''}
@@ -122,10 +122,10 @@ export default function TechnicianDashboard() {
                             {ticket.status?.toUpperCase() || ''}
                         </span>
                     </td>
-                    <td className="p-3 text-gray-600">{ticket.category}</td>
+                    <td className="p-3 text-gray-600">{ticket.category || 'N/A'}</td>
                     <td className="p-3 text-right">
                         <button 
-                            onClick={() => navigate(`/tickets/${ticket._id}`)}
+                            onClick={() => navigate(`/tickets/${ticket._id || ticket.id}`)}
                             className="text-primary-600 hover:text-primary-800 font-medium"
                         >
                             View

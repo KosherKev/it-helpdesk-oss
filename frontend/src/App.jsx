@@ -178,6 +178,17 @@ function App() {
             </ProtectedRoute>
           } 
         />
+
+        <Route 
+          path="/admin/reports" 
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <AdminLayout>
+                <Reports />
+              </AdminLayout>
+            </ProtectedRoute>
+          } 
+        />
       </Routes>
     </BrowserRouter>
   );
