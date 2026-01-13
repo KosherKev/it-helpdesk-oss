@@ -1,5 +1,6 @@
 import express from 'express'
 import * as ticketController from '../controllers/ticketController.js'
+import * as commentController from '../controllers/commentController.js'
 import { authenticate, authorize } from '../middleware/auth.js'
 
 const router = express.Router()

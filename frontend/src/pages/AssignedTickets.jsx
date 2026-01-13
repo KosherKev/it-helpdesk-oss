@@ -62,8 +62,8 @@ const AssignedTickets = () => {
               </thead>
               <tbody>
                 {paginatedTickets.map(ticket => (
-                  <tr key={ticket._id} className="border-t">
-                    <td className="p-3">{ticket._id.slice(-6)}</td>
+                  <tr key={ticket._id || ticket.id} className="border-t">
+                    <td className="p-3">{ticket._id?.slice(-6) || ticket.id?.slice(-6)}</td>
                     <td className="p-3">{ticket.title}</td>
                     <td className="p-3 capitalize">{ticket.priority}</td>
                     <td className="p-3 capitalize">{ticket.status}</td>

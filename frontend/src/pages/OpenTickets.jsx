@@ -53,18 +53,18 @@ const OpenTickets = () => {
         <div className="space-y-3">
           {tickets.map(ticket => (
             <div
-              key={ticket._id}
+              key={ticket._id || ticket.id}
               className="bg-white p-4 rounded-lg shadow flex justify-between items-center"
             >
               <div>
                 <p className="font-semibold">{ticket.title}</p>
                 <p className="text-sm text-gray-500">
-                  #{ticket._id.slice(-6)} • Priority: {ticket.priority}
+                  #{ticket._id?.slice(-6) || ticket.id?.slice(-6)} • Priority: {ticket.priority}
                 </p>
               </div>
 
               <button
-                onClick={() => assignToMe(ticket._id)}
+                onClick={() => assignToMe(ticket._id || ticket.id)}
                 className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
               >
                 Assign to Me

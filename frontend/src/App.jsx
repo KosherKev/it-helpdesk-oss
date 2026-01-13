@@ -29,6 +29,9 @@ import AdminDashboard from "@pages/AdminDashboard";
 import AdminAllTickets from "@pages/AdminAllTickets";
 import AssignTickets from "@pages/AssignTickets";
 import Reports from "@pages/Reports";
+import Users from "@pages/UserManagement";
+
+
 
 function App() {
   return (
@@ -147,6 +150,15 @@ function App() {
               <Reports />
             </ProtectedRoute>
           }
+        />
+
+        <Route 
+          path="/users" 
+          element={
+            <ProtectedRoute allowedRoles={["admin"]}>
+              <Users />
+            </ProtectedRoute>
+          } 
         />
       </Routes>
     </BrowserRouter>

@@ -53,7 +53,7 @@ const AssignTickets = () => {
 
       // Remove assigned ticket and reset pagination if needed
       setTickets(prev =>
-        prev.filter(ticket => ticket._id !== selectedTicket)
+        prev.filter(ticket => ticket._id !== selectedTicket || ticket.id !== selectedTicket)
       );
 
       setSelectedTicket("");
@@ -89,8 +89,8 @@ const AssignTickets = () => {
         >
           <option value="">Select Ticket</option>
           {paginatedTickets.map(ticket => (
-            <option key={ticket._id} value={ticket._id}>
-              {ticket._id.slice(-6)} — {ticket.title}
+            <option key={ticket._id || ticket.id} value={ticket._id || ticket.id}>
+              {ticket._id?.slice(-6) || ticket.id?.slice(-6)} — {ticket.title}
             </option>
           ))}
         </select>

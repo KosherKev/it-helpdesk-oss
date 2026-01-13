@@ -1,115 +1,171 @@
-import { useEffect, useState } from "react";
-import api from "../services/api";
+import { useState } from "react";
+import dashboardService from "../services/dashboardService";
+import toast from "react-hot-toast";
+import { format } from "date-fns";
 
-const Reports = () => {
-  const [summary, setSummary] = useState(null);
-  const [techStats, setTechStats] = useState([]);
-  const [avgResolutionTime, setAvgResolutionTime] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState("");
+export default function Reports() {
+  const [loading, setLoading] = useState(false);
+  const [reportData, setReportData] = useState(null);
+  
+  // Filter State
+  const [filters, setFilters] = useState({
+    startDate: '',
+    endDate: '',
+    type: 'general' // 'general' or 'performance'
+  });
 
-  useEffect(() => {
-    const generateReports = async () => {
-      try {
-        const res = await api.get("/tickets");
-        const tickets = res.data;
+  const handleGenerate = async (e) => {
+    e.preventDefault();
+    if (!filters.startDate || !filters.endDate) {
+        toast.error('Please select a date range');
+        return;
+    }
 
-        // ---- Summary ----
-        const summaryData = {
-          total: tickets.length,
-          open: tickets.filter(t => t.status === "open").length,
-          inProgress: tickets.filter(t => t.status === "in-progress").length,
-          resolved: tickets.filter(t => t.status === "resolved").length,
-        };
-
-        // ---- Technician Performance ----
-        const techMap = {};
-        tickets.forEach(ticket => {
-          if (ticket.assignedTo?.fullName) {
-            techMap[ticket.assignedTo.fullName] =
-              (techMap[ticket.assignedTo.fullName] || 0) + 1;
-          }
-        });
-
-        const techPerformance = Object.entries(techMap).map(
-          ([name, count]) => ({ name, count })
-        );
-
-        // ---- Resolution Time ----
-        const resolvedTickets = tickets.filter(
-          t => t.status === "resolved" && t.updatedAt && t.createdAt
-        );
-
-        const avgTime =
-          resolvedTickets.reduce((acc, ticket) => {
-            const start = new Date(ticket.createdAt);
-            const end = new Date(ticket.updatedAt);
-            return acc + (end - start);
-          }, 0) / (resolvedTickets.length || 1);
-
-        setSummary(summaryData);
-        setTechStats(techPerformance);
-        setAvgResolutionTime(
-          Math.round(avgTime / (1000 * 60 * 60)) // hours
-        );
-      } catch (err) {
-        console.error("Failed to generate reports:", err);
-        setError("Failed to load reports");
-      } finally {
-        setLoading(false);
+    try {
+      setLoading(true);
+      const res = await dashboardService.generateReport(filters);
+      if (res.success) {
+        setReportData(res.data);
+        toast.success('Report generated successfully');
       }
-    };
-
-    generateReports();
-  }, []);
-
-  if (loading) return <p className="p-6">Generating reports...</p>;
-  if (error) return <p className="p-6 text-red-600">{error}</p>;
+    } catch (err) {
+      console.error("Failed to generate report:", err);
+      toast.error("Failed to generate report");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="p-6 space-y-6">
-      <h1 className="text-2xl font-bold">Reports</h1>
+      <h1 className="text-2xl font-bold text-gray-800">Reports & Analytics</h1>
 
-      {/* Tickets Summary */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="font-semibold mb-2">Tickets Summary</h2>
-        <ul className="text-sm text-gray-700 space-y-1">
-          <li>Total Tickets: {summary.total}</li>
-          <li>Open: {summary.open}</li>
-          <li>In Progress: {summary.inProgress}</li>
-          <li>Resolved: {summary.resolved}</li>
-        </ul>
+      {/* Filter Card */}
+      <div className="bg-white p-6 rounded-lg shadow">
+        <h2 className="text-lg font-semibold mb-4">Generate Report</h2>
+        <form onSubmit={handleGenerate} className="flex flex-wrap gap-4 items-end">
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Start Date</label>
+                <input 
+                    type="date" 
+                    className="input-field"
+                    value={filters.startDate}
+                    onChange={(e) => setFilters({...filters, startDate: e.target.value})}
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">End Date</label>
+                <input 
+                    type="date" 
+                    className="input-field"
+                    value={filters.endDate}
+                    onChange={(e) => setFilters({...filters, endDate: e.target.value})}
+                />
+            </div>
+            <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">Report Type</label>
+                <select 
+                    className="input-field min-w-[200px]"
+                    value={filters.type}
+                    onChange={(e) => setFilters({...filters, type: e.target.value})}
+                >
+                    <option value="general">General Ticket Report</option>
+                    <option value="performance">Technician Performance</option>
+                </select>
+            </div>
+            <button 
+                type="submit" 
+                disabled={loading}
+                className="btn btn-primary h-[42px]"
+            >
+                {loading ? 'Generating...' : 'Generate Report'}
+            </button>
+        </form>
       </div>
 
-      {/* Technician Performance */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="font-semibold mb-2">Technician Performance</h2>
-        {techStats.length === 0 ? (
-          <p className="text-sm text-gray-500">
-            No technician data available
-          </p>
-        ) : (
-          <ul className="text-sm space-y-1">
-            {techStats.map((tech, index) => (
-              <li key={index}>
-                {tech.name}: {tech.count} tickets
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {/* Results Section */}
+      {reportData && (
+        <div className="space-y-6 animate-fade-in">
+            <div className="flex justify-between items-center">
+                <h2 className="text-xl font-bold text-gray-800">
+                    Report Results
+                    <span className="text-sm font-normal text-gray-500 ml-2">
+                        ({format(new Date(reportData.filter.startDate), 'MMM d')} - {format(new Date(reportData.filter.endDate), 'MMM d, yyyy')})
+                    </span>
+                </h2>
+                <span className="text-sm text-gray-500">Generated at {format(new Date(reportData.generatedAt), 'HH:mm')}</span>
+            </div>
 
-      {/* Resolution Time */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h2 className="font-semibold mb-2">Average Resolution Time</h2>
-        <p className="text-sm text-gray-700">
-          {avgResolutionTime} hours
-        </p>
-      </div>
+            {filters.type === 'general' ? (
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                    <div className="p-4 bg-gray-50 border-b">
+                        <h3 className="font-semibold text-gray-700">Ticket List ({reportData.data.length})</h3>
+                    </div>
+                    <div className="overflow-x-auto">
+                        <table className="w-full text-sm text-left">
+                            <thead className="bg-white text-gray-500 font-medium border-b">
+                                <tr>
+                                    <th className="p-3">Ticket #</th>
+                                    <th className="p-3">Title</th>
+                                    <th className="p-3">Status</th>
+                                    <th className="p-3">Priority</th>
+                                    <th className="p-3">Created At</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {reportData.data.map((ticket) => (
+                                    <tr key={ticket._id} className="hover:bg-gray-50">
+                                        <td className="p-3 font-mono">{ticket.ticketNumber}</td>
+                                        <td className="p-3">{ticket.title}</td>
+                                        <td className="p-3">
+                                            <span className={`px-2 py-1 rounded-full text-xs font-semibold 
+                                                ${ticket.status === 'open' ? 'bg-blue-100 text-blue-800' : 
+                                                  ticket.status === 'resolved' ? 'bg-green-100 text-green-800' : 'bg-gray-100'}`}>
+                                                {ticket.status}
+                                            </span>
+                                        </td>
+                                        <td className="p-3">{ticket.priority}</td>
+                                        <td className="p-3 text-gray-500">
+                                            {format(new Date(ticket.createdAt), 'MMM d, HH:mm')}
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            ) : (
+                <div className="bg-white rounded-lg shadow overflow-hidden">
+                    <div className="p-4 bg-gray-50 border-b">
+                        <h3 className="font-semibold text-gray-700">Technician Performance Metrics</h3>
+                    </div>
+                    <div className="overflow-x-auto">
+                         <table className="w-full text-sm text-left">
+                            <thead className="bg-white text-gray-500 font-medium border-b">
+                                <tr>
+                                    <th className="p-3">Technician ID</th>
+                                    <th className="p-3">Avg Resolution Time (ms)</th>
+                                </tr>
+                            </thead>
+                            <tbody className="divide-y divide-gray-100">
+                                {reportData.data.map((stat, idx) => (
+                                    <tr key={idx} className="hover:bg-gray-50">
+                                        <td className="p-3 font-mono">{stat._id || 'Unassigned'}</td>
+                                        <td className="p-3">
+                                            {stat.avgResolutionTime ? 
+                                                `${(stat.avgResolutionTime / (1000 * 60 * 60)).toFixed(1)} hours` : 
+                                                'N/A'
+                                            }
+                                        </td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            )}
+        </div>
+      )}
     </div>
-  );
-};
-
-export default Reports;
-
-
+  )
+}
