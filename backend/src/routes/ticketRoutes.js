@@ -25,9 +25,8 @@ router.delete('/:id', authorize('admin'), ticketController.deleteTicket)
 router.patch('/:id/assign', authorize('technician', 'admin'), ticketController.assignTicket)
 router.patch('/:id/status', authorize('technician', 'admin'), ticketController.updateTicketStatus)
 
-// Comments will be sub-resource or separate? 
-// Docs say: GET /tickets/:ticketId/comments
-// We'll handle that in commentRoutes or here if simple. 
-// For now, let's stick to Ticket routes.
+// Comment Routes (Nested)
+router.get('/:ticketId/comments', commentController.getTicketComments)
+router.post('/:ticketId/comments', commentController.addComment)
 
 export default router
