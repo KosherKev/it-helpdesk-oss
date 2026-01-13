@@ -12,7 +12,7 @@ const OpenTickets = () => {
     const fetchOpenTickets = async () => {
       try {
         const res = await api.get("/tickets/unassigned");
-        setTickets(res.data);
+        setTickets(res.data?.tickets || []);
       } catch (err) {
         console.error("Error fetching open tickets:", err);
         setError("Failed to load open tickets");

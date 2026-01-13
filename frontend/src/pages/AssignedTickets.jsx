@@ -14,7 +14,7 @@ const AssignedTickets = () => {
     const fetchTickets = async () => {
       try {
         const response = await api.get("/tickets/assigned");
-        setTickets(response.data);
+        setTickets(response.data?.tickets || []);
       } catch (err) {
         console.error("Error fetching assigned tickets:", err);
         setError("Failed to load assigned tickets");
@@ -68,7 +68,7 @@ const AssignedTickets = () => {
                     <td className="p-3 capitalize">{ticket.priority}</td>
                     <td className="p-3 capitalize">{ticket.status}</td>
                     <td className="p-3">
-                      {ticket.createdBy?.fullName || "N/A"}
+                      {ticket.createdBy?.fullName || ticket.createdBy?.username || "N/A"}
                     </td>
                   </tr>
                 ))}

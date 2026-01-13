@@ -129,7 +129,7 @@ const AssignTickets = () => {
           <option value="">Select Technician</option>
           {technicians.map(tech => (
             <option key={tech._id} value={tech._id}>
-              {tech.fullName}
+              {tech.fullName || tech.username}
             </option>
           ))}
         </select>

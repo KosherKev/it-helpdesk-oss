@@ -23,7 +23,7 @@ export default function TechnicianDashboard() {
       setLoading(true)
       const res = await ticketService.getAssignedTickets()
       if (res.success) {
-        const ticketList = res.data
+        const ticketList = res.data?.tickets || []
         setTickets(ticketList)
         
         // Calculate stats client-side based on assigned tickets
@@ -114,12 +114,12 @@ export default function TechnicianDashboard() {
                     <td className="p-3 font-medium text-gray-900">{ticket.title}</td>
                     <td className="p-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityColor(ticket.priority)}`}>
-                            {ticket.priority.toUpperCase()}
+                            {ticket.priority?.toUpperCase() || ''}
                         </span>
                     </td>
                     <td className="p-3">
                         <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}>
-                            {ticket.status.toUpperCase()}
+                            {ticket.status?.toUpperCase() || ''}
                         </span>
                     </td>
                     <td className="p-3 text-gray-600">{ticket.category}</td>

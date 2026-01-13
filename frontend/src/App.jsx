@@ -60,7 +60,9 @@ function App() {
           path="/tickets"
           element={
             <ProtectedRoute allowedRoles={["customer", "technician", "admin"]}>
+              <CustomerLayout>
               <Tickets />
+              </CustomerLayout>
             </ProtectedRoute>
           }
         />
@@ -69,7 +71,9 @@ function App() {
           path="/tickets/new"
           element={
             <ProtectedRoute allowedRoles={["customer"]}>
-              <CreateTicket />
+              <CustomerLayout>
+                <CreateTicket />
+              </CustomerLayout>
             </ProtectedRoute>
           }
         />
@@ -78,7 +82,9 @@ function App() {
           path="/tickets/:id"
           element={
             <ProtectedRoute allowedRoles={["customer", "technician", "admin"]}>
-              <TicketDetail />
+              <CustomerLayout>
+                <TicketDetail />
+              </CustomerLayout>
             </ProtectedRoute>
           }
         />
@@ -99,7 +105,9 @@ function App() {
           path="/technician/assigned"
           element={
             <ProtectedRoute allowedRoles={["technician"]}>
-              <AssignedTickets />
+              <TechnicianLayout>
+                <AssignedTickets />
+              </TechnicianLayout>
             </ProtectedRoute>
           }
         />
@@ -108,7 +116,9 @@ function App() {
           path="/technician/open"
           element={
             <ProtectedRoute allowedRoles={["technician"]}>
-              <OpenTickets />
+              <TechnicianLayout>
+                <OpenTickets />
+              </TechnicianLayout>
             </ProtectedRoute>
           }
         />
@@ -129,7 +139,9 @@ function App() {
           path="/admin/tickets"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminAllTickets />
+              <AdminLayout>
+                <AdminAllTickets />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -138,7 +150,9 @@ function App() {
           path="/admin/assign"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
-              <AssignTickets />
+              <AdminLayout>
+                <AssignTickets />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
@@ -147,16 +161,20 @@ function App() {
           path="/admin/reports"
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
-              <Reports />
+              <AdminLayout>
+                <Reports />
+              </AdminLayout>
             </ProtectedRoute>
           }
         />
 
         <Route 
-          path="/users" 
+          path="/admin/users" 
           element={
             <ProtectedRoute allowedRoles={["admin"]}>
-              <Users />
+              <AdminLayout>
+                <Users />
+              </AdminLayout>
             </ProtectedRoute>
           } 
         />
