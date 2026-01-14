@@ -76,14 +76,14 @@ const AssignTickets = () => {
     <div className="p-6 max-w-xl">
       <h1 className="text-2xl font-bold mb-4">Assign Tickets</h1>
 
-      <div className="bg-white p-4 rounded-lg shadow space-y-4">
+      <div className="card space-y-4">
         {message && (
-          <p className="text-sm text-center text-blue-600">{message}</p>
+          <p className="text-sm text-center text-primary-600">{message}</p>
         )}
 
         {/* Ticket Select */}
         <select
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded-lg bg-white border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
           value={selectedTicket}
           onChange={e => setSelectedTicket(e.target.value)}
         >
@@ -101,19 +101,19 @@ const AssignTickets = () => {
             <button
               disabled={page === 1}
               onClick={() => setPage(p => p - 1)}
-              className="px-2 py-1 border rounded disabled:opacity-50"
+              className="btn btn-secondary py-1 px-3 text-sm disabled:opacity-50"
             >
               Prev
             </button>
 
-            <span>
+            <span className="text-gray-600 self-center">
               Page {page} of {totalPages}
             </span>
 
             <button
               disabled={page === totalPages}
               onClick={() => setPage(p => p + 1)}
-              className="px-2 py-1 border rounded disabled:opacity-50"
+              className="btn btn-secondary py-1 px-3 text-sm disabled:opacity-50"
             >
               Next
             </button>
@@ -122,7 +122,7 @@ const AssignTickets = () => {
 
         {/* Technician Select */}
         <select
-          className="w-full border p-2 rounded"
+          className="w-full border p-2 rounded-lg bg-white border-gray-200 focus:outline-none focus:ring-2 focus:ring-primary-500"
           value={selectedTech}
           onChange={e => setSelectedTech(e.target.value)}
         >
@@ -136,7 +136,7 @@ const AssignTickets = () => {
 
         <button
           onClick={handleAssign}
-          className="bg-blue-600 text-white px-4 py-2 rounded w-full hover:bg-blue-700"
+          className="btn btn-primary w-full"
         >
           Assign Ticket
         </button>

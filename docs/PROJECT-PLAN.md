@@ -109,29 +109,6 @@ A simplified **IT Helpdesk Ticket Management System** that demonstrates core OSS
 
 ---
 
-## 🎨 Optional Features (Nice-to-Have)
-
-### Week 3 Additions (if time permits)
-1. **Search & Filter**
-   - Search tickets by title/description
-   - Filter by status, priority, category
-   
-2. **Simple Charts**
-   - Tickets by status (pie chart)
-   - Tickets over time (line chart)
-   
-3. **Email Notifications**
-   - Simple email on ticket creation
-   - Status update notifications
-   
-4. **File Attachments**
-   - Upload screenshots/files to tickets
-   
-5. **Categories**
-   - Hardware, Software, Network, Access, Other
-
----
-
 ## 🗂️ Data Models
 
 ### User
@@ -207,7 +184,7 @@ A simplified **IT Helpdesk Ticket Management System** that demonstrates core OSS
 1. **All Tickets** - System-wide ticket view
 2. **Assign Tickets** - Assign to technicians
 3. **User Management** - View/manage users
-4. **Statistics** - Overall system metrics
+<!-- 4. **Statistics** - Overall system metrics -->
 
 ---
 
@@ -223,7 +200,6 @@ A simplified **IT Helpdesk Ticket Management System** that demonstrates core OSS
 ✅ Role-based access control works  
 
 ### Nice to Have
-✅ Search and filter functionality  
 ✅ Basic charts/visualization  
 ✅ Professional UI/UX  
 ✅ Responsive design  
@@ -270,7 +246,7 @@ This project showcases key Operations Support System principles:
 
 ### Production (Optional)
 - Deploy to Vercel/Netlify (Frontend)
-- Deploy to Render/Railway (Backend)
+- Deploy to Render (Backend)
 - MongoDB Atlas (Database)
 
 ---
@@ -309,31 +285,3 @@ Students will learn:
 - Team collaboration
 - Git workflow
 - Agile methodology (sprints)
-
----
-
-## 💡 Why This Beats Complex Projects
-
-### Compared to Network Monitoring OSS:
-❌ Network monitoring: Needs SNMP, simulators, complex setup  
-✅ Helpdesk: Just web forms and database  
-
-❌ Network monitoring: Hardware dependencies  
-✅ Helpdesk: Works anywhere with internet  
-
-❌ Network monitoring: Hard to demo without equipment  
-✅ Helpdesk: Easy live demo on laptop  
-
-❌ Network monitoring: 3 weeks not enough  
-✅ Helpdesk: Perfect for 3 weeks  
-
-### Same OSS Concepts, Easier Implementation
-- Both track operational issues
-- Both have dashboards and metrics
-- Both demonstrate service management
-- Helpdesk is just more practical for classroom!
-
----
-
-**Project Status:** ✅ Ready for Team Assignment  
-**Next Step:** Review 5-person task distribution in TEAM-ASSIGNMENT.md

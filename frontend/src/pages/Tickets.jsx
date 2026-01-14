@@ -32,22 +32,22 @@ export default function Tickets() {
 
   const getStatusColor = (status) => {
     const colors = {
-      open: 'bg-green-100 text-green-800',
-      'in-progress': 'bg-yellow-100 text-yellow-800',
-      resolved: 'bg-blue-100 text-blue-800',
-      closed: 'bg-gray-100 text-gray-800'
+      open: 'badge-info',
+      'in-progress': 'badge-warning',
+      resolved: 'badge-success',
+      closed: 'badge-neutral'
     }
-    return colors[status] || 'bg-gray-100 text-gray-800'
+    return colors[status] || 'badge-neutral'
   }
 
   const getPriorityColor = (priority) => {
     const colors = {
-      low: 'bg-gray-100 text-gray-800',
-      medium: 'bg-blue-100 text-blue-800',
-      high: 'bg-orange-100 text-orange-800',
-      urgent: 'bg-red-100 text-red-800'
+      low: 'badge-neutral',
+      medium: 'badge-info',
+      high: 'badge-warning',
+      urgent: 'badge-danger'
     }
-    return colors[priority] || 'bg-gray-100 text-gray-800'
+    return colors[priority] || 'badge-neutral'
   }
 
   return (
@@ -71,7 +71,7 @@ export default function Tickets() {
             </div>
         </div>
 
-        <div className="bg-white shadow overflow-hidden sm:rounded-lg">
+        <div className="card p-0 overflow-hidden">
             {loading ? (
                 <div className="p-8 text-center text-gray-500">Loading tickets...</div>
             ) : filteredTickets.length === 0 ? (
@@ -91,17 +91,17 @@ export default function Tickets() {
                 <ul className="divide-y divide-gray-200">
                     {filteredTickets.map(ticket => (
                         <li key={ticket._id || ticket.id}>
-                            <Link to={`/tickets/${ticket._id || ticket.id}`} className="block hover:bg-gray-50">
-                                <div className="px-4 py-4 sm:px-6">
+                            <Link to={`/tickets/${ticket._id || ticket.id}`} className="block hover:bg-gray-50 transition-colors">
+                                <div className="px-6 py-4">
                                     <div className="flex items-center justify-between">
                                         <div className="flex items-center truncate">
                                             <p className="text-sm font-medium text-primary-600 truncate">{ticket.title}</p>
-                                            <span className={`ml-2 px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getStatusColor(ticket.status)}`}>
+                                            <span className={`ml-2 badge ${getStatusColor(ticket.status)}`}>
                                                 {ticket.status}
                                             </span>
                                         </div>
                                         <div className="ml-2 flex-shrink-0 flex">
-                                            <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getPriorityColor(ticket.priority)}`}>
+                                            <span className={`badge ${getPriorityColor(ticket.priority)}`}>
                                                 {ticket.priority}
                                             </span>
                                         </div>

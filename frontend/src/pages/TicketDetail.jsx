@@ -21,6 +21,8 @@ export default function TicketDetail() {
   // State for actions
   const [technicians, setTechnicians] = useState([])
   const [showAssignModal, setShowAssignModal] = useState(false)
+  const [showResolutionModal, setShowResolutionModal] = useState(false)
+  const [resolutionText, setResolutionText] = useState('')
 
   const isTechnicianOrAdmin = ['technician', 'admin'].includes(user?.role)
   const isAdmin = user?.role === 'admin'
@@ -65,6 +67,10 @@ export default function TicketDetail() {
   }
 
   const handleStatusUpdate = async (newStatus) => {
+    if (newStatus === 'resolved') {
+        setShowResolutionModal(true)
+        return
+    }
     try {
       const res = await ticketService.updateTicketStatus(id, newStatus)
       if (res.success) {
@@ -73,6 +79,28 @@ export default function TicketDetail() {
       }
     } catch (error) {
       toast.error('Failed to update status')
+    }
+  }
+
+  const handleResolutionSubmit = async () => {
+    if (!resolutionText.trim()) {
+        toast.error('Resolution text is required')
+        return
+    }
+    try {
+        const res = await ticketService.updateTicketStatus(id, 'resolved', resolutionText)
+        if (res.success) {
+            setTicket(prev => ({ 
+                ...prev, 
+                status: 'resolved', 
+                resolution: resolutionText,
+                resolvedAt: new Date() 
+            }))
+            toast.success('Ticket resolved successfully')
+            setShowResolutionModal(false)
+        }
+    } catch (error) {
+        toast.error('Failed to resolve ticket')
     }
   }
 
@@ -125,36 +153,36 @@ export default function TicketDetail() {
 
   const getStatusColor = (status) => {
     const colors = {
-      open: 'bg-blue-100 text-blue-800',
-      'in-progress': 'bg-yellow-100 text-yellow-800',
-      resolved: 'bg-green-100 text-green-800',
-      closed: 'bg-gray-100 text-gray-800'
+      open: 'badge-info',
+      'in-progress': 'badge-warning',
+      resolved: 'badge-success',
+      closed: 'badge-neutral'
     }
-    return colors[status] || 'bg-gray-100 text-gray-800'
+    return colors[status] || 'badge-neutral'
   }
 
   const getPriorityColor = (priority) => {
     const colors = {
-      low: 'bg-gray-100 text-gray-800',
-      medium: 'bg-blue-100 text-blue-800',
-      high: 'bg-orange-100 text-orange-800',
-      urgent: 'bg-red-100 text-red-800'
+      low: 'badge-neutral',
+      medium: 'badge-info',
+      high: 'badge-warning',
+      urgent: 'badge-danger'
     }
-    return colors[priority] || 'bg-gray-100 text-gray-800'
+    return colors[priority] || 'badge-neutral'
   }
 
   return (
     <div className="max-w-5xl mx-auto p-6 space-y-6">
       {/* Header Section */}
-      <div className="bg-white rounded-lg shadow p-6">
+      <div className="card">
         <div className="flex justify-between items-start mb-4">
             <div>
                 <div className="flex items-center space-x-3 mb-2">
                     <span className="text-gray-500 font-mono text-sm">#{ticket.ticketNumber}</span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status || 'open')}`}>
+                    <span className={`badge ${getStatusColor(ticket.status || 'open')}`}>
                         {(ticket.status || 'open').toUpperCase()}
                     </span>
-                    <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityColor(ticket.priority || 'medium')}`}>
+                    <span className={`badge ${getPriorityColor(ticket.priority || 'medium')}`}>
                         {(ticket.priority || 'medium').toUpperCase()}
                     </span>
                 </div>
@@ -167,7 +195,7 @@ export default function TicketDetail() {
         </div>
 
         {/* Action Bar */}
-        <div className="flex flex-wrap gap-3 border-t pt-4 mt-4">
+        <div className="flex flex-wrap gap-3 border-t border-gray-100 pt-4 mt-4">
             {isTechnicianOrAdmin && (
                 <>
                     <select 
@@ -205,7 +233,7 @@ export default function TicketDetail() {
              {!isTechnicianOrAdmin && ticket.status !== 'closed' && (
                  <button 
                     onClick={() => handleStatusUpdate('closed')}
-                    className="btn bg-red-50 text-red-600 hover:bg-red-100"
+                    className="btn bg-danger-50 text-danger-700 hover:bg-danger-100 border border-danger-200"
                  >
                     Close Ticket
                  </button>
@@ -214,7 +242,7 @@ export default function TicketDetail() {
         
         {/* Assignment Modal (Inline for simplicity) */}
         {showAssignModal && (
-            <div className="mt-4 p-4 bg-gray-50 rounded-md border">
+            <div className="mt-4 p-4 bg-gray-50 rounded-lg border border-gray-200">
                 <h3 className="font-semibold mb-2">Select Technician</h3>
                 <div className="flex gap-2">
                     <select 
@@ -238,21 +266,65 @@ export default function TicketDetail() {
                 </div>
             </div>
         )}
+
+        {/* Resolution Modal */}
+        {showResolutionModal && (
+            <div className="mt-4 p-4 bg-success-50 rounded-lg border border-success-200">
+                <h3 className="font-semibold mb-2 text-success-800">Resolution Details</h3>
+                <div className="space-y-3">
+                    <textarea
+                        value={resolutionText}
+                        onChange={(e) => setResolutionText(e.target.value)}
+                        placeholder="Describe how the issue was resolved..."
+                        className="input-field min-h-[100px]"
+                    />
+                    <div className="flex gap-2 justify-end">
+                        <button 
+                            onClick={() => setShowResolutionModal(false)}
+                            className="btn btn-secondary"
+                        >
+                            Cancel
+                        </button>
+                        <button 
+                            onClick={handleResolutionSubmit}
+                            className="btn btn-success"
+                        >
+                            Resolve Ticket
+                        </button>
+                    </div>
+                </div>
+            </div>
+        )}
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         {/* Main Content */}
         <div className="md:col-span-2 space-y-6">
             {/* Description */}
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="card">
                 <h3 className="text-lg font-semibold mb-4">Description</h3>
                 <div className="prose max-w-none text-gray-700 whitespace-pre-wrap">
                     {ticket.description}
                 </div>
             </div>
 
+            {/* Resolution */}
+            {ticket.resolution && (
+                <div className="card border-l-4 border-l-success-500 bg-success-50/10">
+                    <h3 className="text-lg font-semibold mb-4 text-success-700">Resolution</h3>
+                    <div className="prose max-w-none text-gray-800 whitespace-pre-wrap">
+                        {ticket.resolution}
+                    </div>
+                    {ticket.resolvedAt && (
+                         <p className="text-sm text-gray-500 mt-4 pt-4 border-t border-success-100">
+                            Resolved on {format(new Date(ticket.resolvedAt), 'MMM d, yyyy HH:mm')}
+                         </p>
+                    )}
+                </div>
+            )}
+
             {/* Comments */}
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="card">
                 <h3 className="text-lg font-semibold mb-4">Comments ({comments.length})</h3>
                 <div className="space-y-6 mb-6">
                     {comments.map(comment => (
@@ -262,7 +334,7 @@ export default function TicketDetail() {
                                     {comment.user?.fullName?.charAt(0) || comment.user?.username?.charAt(0) || 'U'}
                                 </div>
                             </div>
-                            <div className="flex-1 bg-gray-50 rounded-lg p-4">
+                            <div className="flex-1 bg-gray-50 rounded-lg p-4 border border-gray-100">
                                 <div className="flex justify-between items-center mb-2">
                                     <span className="font-medium text-gray-900">{comment.user?.fullName || comment.user?.username}</span>
                                     <span className="text-xs text-gray-500">
@@ -302,12 +374,12 @@ export default function TicketDetail() {
 
         {/* Sidebar Info */}
         <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="card">
                 <h3 className="text-lg font-semibold mb-4">Ticket Info</h3>
                 <dl className="space-y-3">
                     <div>
                         <dt className="text-sm font-medium text-gray-500">Category</dt>
-                        <dd className="mt-1 text-sm text-gray-900">{ticket.category}</dd>
+                        <dd className="mt-1 text-sm text-gray-900 capitalize">{ticket.category}</dd>
                     </div>
                     <div>
                         <dt className="text-sm font-medium text-gray-500">Created By</dt>
@@ -327,7 +399,7 @@ export default function TicketDetail() {
                                     <span className="text-gray-400 text-xs">{ticket.assignedTo.email}</span>
                                 </>
                             ) : (
-                                <span className="text-yellow-600 italic">Unassigned</span>
+                                <span className="text-warning-600 italic">Unassigned</span>
                             )}
                         </dd>
                     </div>

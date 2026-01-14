@@ -17,9 +17,16 @@ export default function Login() {
     setLoading(true)
     
     try {
-      await login(formData)
+      const data = await login(formData)
       toast.success('Login successful!')
-      navigate('/')
+      
+      if (data.user?.role === 'admin') {
+        navigate('/admin')
+      } else if (data.user?.role === 'technician') {
+        navigate('/technician')
+      } else {
+        navigate('/')
+      }
     } catch (error) {
       console.error('Login failed:', error)
     } finally {

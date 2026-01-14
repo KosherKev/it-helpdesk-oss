@@ -43,22 +43,22 @@ export default function TechnicianDashboard() {
 
   const getPriorityColor = (priority) => {
     const colors = {
-      low: 'bg-gray-100 text-gray-800',
-      medium: 'bg-blue-100 text-blue-800',
-      high: 'bg-orange-100 text-orange-800',
-      urgent: 'bg-red-100 text-red-800'
+      low: 'badge-neutral',
+      medium: 'badge-info',
+      high: 'badge-warning',
+      urgent: 'badge-danger'
     }
-    return colors[priority] || 'bg-gray-100 text-gray-800'
+    return colors[priority] || 'badge-neutral'
   }
 
   const getStatusColor = (status) => {
     const colors = {
-      open: 'bg-blue-100 text-blue-800',
-      'in-progress': 'bg-yellow-100 text-yellow-800',
-      resolved: 'bg-green-100 text-green-800',
-      closed: 'bg-gray-100 text-gray-800'
+      open: 'badge-info',
+      'in-progress': 'badge-warning',
+      resolved: 'badge-success',
+      closed: 'badge-neutral'
     }
-    return colors[status] || 'bg-gray-100 text-gray-800'
+    return colors[status] || 'badge-neutral'
   }
 
   return (
@@ -67,26 +67,26 @@ export default function TechnicianDashboard() {
 
       {/* Stats Cards */}
       <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
+        <div className="card border-l-4 border-l-primary-500">
             <p className="text-gray-500 text-sm">Total Assigned</p>
             <p className="text-3xl font-bold text-gray-800">{stats.assigned}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-500">
+        <div className="card border-l-4 border-l-info-500">
             <p className="text-gray-500 text-sm">Open</p>
             <p className="text-3xl font-bold text-gray-800">{stats.open}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-indigo-500">
+        <div className="card border-l-4 border-l-warning-500">
             <p className="text-gray-500 text-sm">In Progress</p>
             <p className="text-3xl font-bold text-gray-800">{stats.inProgress}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+        <div className="card border-l-4 border-l-success-500">
             <p className="text-gray-500 text-sm">Resolved</p>
             <p className="text-3xl font-bold text-gray-800">{stats.resolved}</p>
         </div>
       </div>
 
       {/* Ticket List */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      <div className="card p-0 overflow-hidden">
         <div className="p-4 border-b">
             <h2 className="font-semibold text-gray-800">My Assigned Tickets</h2>
         </div>
@@ -113,12 +113,12 @@ export default function TechnicianDashboard() {
                     <td className="p-3 font-mono text-gray-600">{ticket.ticketNumber}</td>
                     <td className="p-3 font-medium text-gray-900">{ticket.title || 'No Title'}</td>
                     <td className="p-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getPriorityColor(ticket.priority)}`}>
+                        <span className={`badge ${getPriorityColor(ticket.priority)}`}>
                             {ticket.priority?.toUpperCase() || ''}
                         </span>
                     </td>
                     <td className="p-3">
-                        <span className={`px-2 py-1 rounded-full text-xs font-semibold ${getStatusColor(ticket.status)}`}>
+                        <span className={`badge ${getStatusColor(ticket.status)}`}>
                             {ticket.status?.toUpperCase() || ''}
                         </span>
                     </td>

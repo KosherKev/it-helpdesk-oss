@@ -54,12 +54,12 @@ export default function CreateTicket() {
             <p className="text-gray-600 mt-1">Submit a new support request and we'll get back to you.</p>
         </div>
 
-        <div className="bg-white shadow rounded-lg overflow-hidden">
+        <div className="card p-0 overflow-hidden">
           <form onSubmit={handleSubmit} className="p-6 space-y-6">
             {/* Title */}
             <div>
               <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-1">
-                Subject <span className="text-red-500">*</span>
+                Subject <span className="text-danger-500">*</span>
               </label>
               <input
                 type="text"
@@ -118,7 +118,7 @@ export default function CreateTicket() {
             {/* Description */}
             <div>
               <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">
-                Description <span className="text-red-500">*</span>
+                Description <span className="text-danger-500">*</span>
               </label>
               <textarea
                 id="description"

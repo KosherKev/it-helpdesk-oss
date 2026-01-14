@@ -93,7 +93,7 @@ export default function Dashboard() {
             <>
               {/* Stats Grid */}
               <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-                <div className="bg-white p-6 rounded-lg shadow">
+                <div className="card border-l-4 border-l-primary-500">
                   <h3 className="text-sm font-medium text-gray-500">
                     Total Tickets
                   </h3>
@@ -102,27 +102,27 @@ export default function Dashboard() {
                   </p>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow border-l-4 border-green-500">
+                <div className="card border-l-4 border-l-success-500">
                   <h3 className="text-sm font-medium text-gray-500">Open</h3>
-                  <p className="mt-2 text-3xl font-semibold text-green-600">
+                  <p className="mt-2 text-3xl font-semibold text-success-600">
                     {stats.open}
                   </p>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow border-l-4 border-yellow-500">
+                <div className="card border-l-4 border-l-warning-500">
                   <h3 className="text-sm font-medium text-gray-500">
                     In Progress
                   </h3>
-                  <p className="mt-2 text-3xl font-semibold text-yellow-600">
+                  <p className="mt-2 text-3xl font-semibold text-warning-600">
                     {stats.inProgress}
                   </p>
                 </div>
 
-                <div className="bg-white p-6 rounded-lg shadow border-l-4 border-blue-500">
+                <div className="card border-l-4 border-l-info-500">
                   <h3 className="text-sm font-medium text-gray-500">
                     Resolved
                   </h3>
-                  <p className="mt-2 text-3xl font-semibold text-blue-600">
+                  <p className="mt-2 text-3xl font-semibold text-info-600">
                     {stats.resolved}
                   </p>
                 </div>
@@ -152,15 +152,15 @@ export default function Dashboard() {
                                         </div>
                                     </div>
                                     <div className="flex flex-col items-end space-y-2">
-                                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            ${ticket.status === 'open' ? 'bg-green-100 text-green-800' : 
-                                              ticket.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' : 
-                                              'bg-gray-100 text-gray-800'}`}>
+                                        <span className={`badge 
+                                            ${ticket.status === 'open' ? 'badge-success' : 
+                                              ticket.status === 'in-progress' ? 'badge-warning' : 
+                                              'badge-neutral'}`}>
                                             {ticket.status.toUpperCase()}
                                         </span>
-                                        <span className={`px-2 py-1 inline-flex text-xs leading-5 font-semibold rounded-full 
-                                            ${ticket.priority === 'urgent' ? 'bg-red-100 text-red-800' : 
-                                              ticket.priority === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}`}>
+                                        <span className={`badge 
+                                            ${ticket.priority === 'urgent' ? 'badge-danger' : 
+                                              ticket.priority === 'high' ? 'badge-warning' : 'badge-neutral'}`}>
                                             {ticket.priority.toUpperCase()}
                                         </span>
                                     </div>

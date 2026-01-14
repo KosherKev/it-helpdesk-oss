@@ -33,20 +33,20 @@ const AdminAllTickets = () => {
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">All Tickets</h1>
 
-      <div className="bg-white rounded-lg shadow overflow-x-auto">
+      <div className="card p-0 overflow-hidden overflow-x-auto">
         <table className="w-full text-sm">
-          <thead className="bg-gray-100">
+          <thead className="bg-gray-50 border-b border-gray-100">
             <tr>
-              <th className="p-3 text-left">Ticket #</th>
-              <th className="p-3 text-left">Title</th>
-              <th className="p-3 text-left">Status</th>
-              <th className="p-3 text-left">Priority</th>
-              <th className="p-3 text-left">Assigned To</th>
-              <th className="p-3 text-left">Created By</th>
-              <th className="p-3 text-left">Date</th>
+              <th className="p-4 text-left font-medium text-gray-500">Ticket #</th>
+              <th className="p-4 text-left font-medium text-gray-500">Title</th>
+              <th className="p-4 text-left font-medium text-gray-500">Status</th>
+              <th className="p-4 text-left font-medium text-gray-500">Priority</th>
+              <th className="p-4 text-left font-medium text-gray-500">Assigned To</th>
+              <th className="p-4 text-left font-medium text-gray-500">Created By</th>
+              <th className="p-4 text-left font-medium text-gray-500">Date</th>
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-gray-100">
             {tickets.length === 0 ? (
               <tr>
                 <td colSpan="7" className="p-6 text-center text-gray-500">
@@ -55,41 +55,41 @@ const AdminAllTickets = () => {
               </tr>
             ) : (
               tickets.map(ticket => (
-                <tr key={ticket._id || ticket.id} className="border-t hover:bg-gray-50">
-                  <td className="p-3">
+                <tr key={ticket._id || ticket.id} className="hover:bg-gray-50">
+                  <td className="p-4">
                     <Link 
                       to={`/tickets/${ticket._id || ticket.id}`}
-                      className="text-blue-600 hover:underline"
+                      className="text-primary-600 hover:text-primary-800 font-medium"
                     >
                       {ticket.ticketNumber || ticket.id.slice(-6)}
                     </Link>
                   </td>
-                  <td className="p-3">{ticket.title || 'No Title'}</td>
-                  <td className="p-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium 
-                      ${ticket.status === 'open' ? 'bg-blue-100 text-blue-800' : 
-                        ticket.status === 'in-progress' ? 'bg-yellow-100 text-yellow-800' : 
-                        ticket.status === 'resolved' ? 'bg-green-100 text-green-800' : 
-                        'bg-gray-100 text-gray-800'}`}>
+                  <td className="p-4 font-medium text-gray-900">{ticket.title || 'No Title'}</td>
+                  <td className="p-4">
+                    <span className={`badge 
+                      ${ticket.status === 'open' ? 'badge-info' : 
+                        ticket.status === 'in-progress' ? 'badge-warning' : 
+                        ticket.status === 'resolved' ? 'badge-success' : 
+                        'badge-neutral'}`}>
                       {ticket.status?.toUpperCase()}
                     </span>
                   </td>
-                  <td className="p-3">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium
-                      ${ticket.priority === 'urgent' ? 'bg-red-100 text-red-800' :
-                        ticket.priority === 'high' ? 'bg-orange-100 text-orange-800' :
-                        ticket.priority === 'medium' ? 'bg-blue-100 text-blue-800' :
-                        'bg-gray-100 text-gray-800'}`}>
+                  <td className="p-4">
+                    <span className={`badge
+                      ${ticket.priority === 'urgent' ? 'badge-danger' :
+                        ticket.priority === 'high' ? 'badge-warning' :
+                        ticket.priority === 'medium' ? 'badge-info' :
+                        'badge-neutral'}`}>
                       {ticket.priority?.toUpperCase()}
                     </span>
                   </td>
-                  <td className="p-3">
+                  <td className="p-4 text-gray-600">
                     {ticket.assignedTo?.fullName || ticket.assignedTo?.username || (
                       <span className="text-gray-400 italic">Unassigned</span>
                     )}
                   </td>
-                  <td className="p-3">{ticket.createdBy?.fullName || ticket.createdBy?.username || 'Unknown'}</td>
-                  <td className="p-3">
+                  <td className="p-4 text-gray-600">{ticket.createdBy?.fullName || ticket.createdBy?.username || 'Unknown'}</td>
+                  <td className="p-4 text-gray-500">
                     {new Date(ticket.createdAt).toLocaleDateString()}
                   </td>
                 </tr>

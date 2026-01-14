@@ -41,7 +41,7 @@ const OpenTickets = () => {
   };
 
   if (loading) return <p className="p-6">Loading open tickets...</p>;
-  if (error) return <p className="p-6 text-red-600">{error}</p>;
+  if (error) return <p className="p-6 text-danger-600">{error}</p>;
 
   return (
     <div className="p-6">
@@ -54,18 +54,18 @@ const OpenTickets = () => {
           {tickets.map(ticket => (
             <div
               key={ticket._id || ticket.id}
-              className="bg-white p-4 rounded-lg shadow flex justify-between items-center"
+              className="card flex flex-row justify-between items-center"
             >
               <div>
                 <p className="font-semibold">{ticket.title}</p>
                 <p className="text-sm text-gray-500">
-                  #{ticket._id?.slice(-6) || ticket.id?.slice(-6)} • Priority: {ticket.priority}
+                  #{ticket._id?.slice(-6) || ticket.id?.slice(-6)} • Priority: <span className="capitalize">{ticket.priority}</span>
                 </p>
               </div>
 
               <button
                 onClick={() => assignToMe(ticket._id || ticket.id)}
-                className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700"
+                className="btn btn-primary"
               >
                 Assign to Me
               </button>

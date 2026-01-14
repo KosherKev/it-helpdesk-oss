@@ -47,8 +47,8 @@ const ticketService = {
   },
 
   // Update ticket status
-  updateTicketStatus: async (id, status) => {
-    return await api.patch(`/tickets/${id}/status`, { status })
+  updateTicketStatus: async (id, status, resolution) => {
+    return await api.patch(`/tickets/${id}/status`, { status, resolution })
   }
 }
 

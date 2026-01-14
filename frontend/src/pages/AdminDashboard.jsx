@@ -56,23 +56,23 @@ export default function AdminDashboard() {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-5 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-gray-500">
+        <div className="card border-l-4 border-l-primary-500">
             <p className="text-gray-500 text-sm">Total Tickets</p>
             <p className="text-3xl font-bold text-gray-800">{stats.total}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-red-500">
+        <div className="card border-l-4 border-l-danger-500">
             <p className="text-gray-500 text-sm">Open</p>
             <p className="text-3xl font-bold text-gray-800">{stats.open}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-yellow-500">
+        <div className="card border-l-4 border-l-warning-500">
             <p className="text-gray-500 text-sm">In Progress</p>
             <p className="text-3xl font-bold text-gray-800">{stats.inProgress}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
+        <div className="card border-l-4 border-l-success-500">
             <p className="text-gray-500 text-sm">Resolved</p>
             <p className="text-3xl font-bold text-gray-800">{stats.resolved}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-gray-400">
+        <div className="card border-l-4 border-l-gray-400">
             <p className="text-gray-500 text-sm">Closed</p>
             <p className="text-3xl font-bold text-gray-800">{stats.closed}</p>
         </div>
@@ -80,13 +80,13 @@ export default function AdminDashboard() {
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Unassigned Tickets Alert */}
-        <div className="bg-white rounded-lg shadow overflow-hidden">
-            <div className="p-4 border-b bg-red-50 flex justify-between items-center">
-                <h2 className="font-semibold text-red-800 flex items-center gap-2">
-                    <span className="w-2 h-2 bg-red-600 rounded-full animate-pulse"></span>
+        <div className="card p-0 overflow-hidden">
+            <div className="p-4 border-b bg-danger-50 flex justify-between items-center">
+                <h2 className="font-semibold text-danger-800 flex items-center gap-2">
+                    <span className="w-2 h-2 bg-danger-600 rounded-full animate-pulse"></span>
                     Unassigned Tickets ({unassignedTickets.length})
                 </h2>
-                <Link to="/tickets" className="text-sm text-red-600 hover:underline">View All</Link>
+                <Link to="/tickets" className="text-sm text-danger-600 hover:underline">View All</Link>
             </div>
             <div className="divide-y divide-gray-100">
                 {unassignedTickets.length === 0 ? (
@@ -100,9 +100,9 @@ export default function AdminDashboard() {
                                 </Link>
                                 <span className="text-xs text-gray-500">#{ticket.ticketNumber} • {format(new Date(ticket.createdAt), 'MMM d, HH:mm')}</span>
                             </div>
-                            <span className={`px-2 py-1 rounded text-xs font-semibold
-                                ${ticket.priority === 'urgent' ? 'bg-red-100 text-red-800' : 
-                                  ticket.priority === 'high' ? 'bg-orange-100 text-orange-800' : 'bg-gray-100 text-gray-800'}`}>
+                            <span className={`badge 
+                                ${ticket.priority === 'urgent' ? 'badge-danger' : 
+                                  ticket.priority === 'high' ? 'badge-warning' : 'badge-neutral'}`}>
                                 {ticket.priority?.toUpperCase() || ''}
                             </span>
                         </div>
@@ -118,21 +118,21 @@ export default function AdminDashboard() {
 
         {/* Quick Actions / System Health */}
         <div className="space-y-6">
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="card">
                 <h2 className="font-semibold text-gray-800 mb-4">Quick Actions</h2>
                 <div className="grid grid-cols-2 gap-4">
-                    <Link to="/admin/users" className="p-4 bg-blue-50 rounded-lg text-center hover:bg-blue-100 transition">
-                        <span className="block text-blue-700 font-semibold">Manage Users</span>
+                    <Link to="/admin/users" className="p-4 bg-primary-50 rounded-lg text-center hover:bg-primary-100 transition">
+                        <span className="block text-primary-700 font-semibold">Manage Users</span>
                     </Link>
-                    <Link to="/admin/reports" className="p-4 bg-purple-50 rounded-lg text-center hover:bg-purple-100 transition">
-                        <span className="block text-purple-700 font-semibold">View Reports</span>
+                    <Link to="/admin/reports" className="p-4 bg-info-50 rounded-lg text-center hover:bg-info-100 transition">
+                        <span className="block text-info-700 font-semibold">View Reports</span>
                     </Link>
                 </div>
             </div>
             
-            <div className="bg-white rounded-lg shadow p-6">
+            <div className="card">
                 <h2 className="font-semibold text-gray-800 mb-4">System Status</h2>
-                <div className="flex items-center space-x-2 text-green-700 bg-green-50 p-3 rounded">
+                <div className="flex items-center space-x-2 text-success-700 bg-success-50 p-3 rounded">
                     <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
                     </svg>

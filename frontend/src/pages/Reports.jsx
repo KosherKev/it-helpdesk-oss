@@ -41,7 +41,7 @@ export default function Reports() {
       <h1 className="text-2xl font-bold text-gray-800">Reports & Analytics</h1>
 
       {/* Filter Card */}
-      <div className="bg-white p-6 rounded-lg shadow">
+      <div className="card">
         <h2 className="text-lg font-semibold mb-4">Generate Report</h2>
         <form onSubmit={handleGenerate} className="flex flex-wrap gap-4 items-end">
             <div>
@@ -97,71 +97,70 @@ export default function Reports() {
             </div>
 
             {filters.type === 'general' ? (
-                <div className="bg-white rounded-lg shadow overflow-hidden">
-                    <div className="p-4 bg-gray-50 border-b">
-                        <h3 className="font-semibold text-gray-700">Ticket List ({reportData.data.length})</h3>
-                    </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full text-sm text-left">
-                            <thead className="bg-white text-gray-500 font-medium border-b">
-                                <tr>
-                                    <th className="p-3">Ticket #</th>
-                                    <th className="p-3">Title</th>
-                                    <th className="p-3">Status</th>
-                                    <th className="p-3">Priority</th>
-                                    <th className="p-3">Created At</th>
+                <div className="card p-0 overflow-hidden overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-100">
+                            <tr>
+                                <th className="p-4">Ticket #</th>
+                                <th className="p-4">Title</th>
+                                <th className="p-4">Status</th>
+                                <th className="p-4">Priority</th>
+                                <th className="p-4">Created At</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {reportData.data.map((ticket) => (
+                                <tr key={ticket._id} className="hover:bg-gray-50">
+                                    <td className="p-4 font-mono">{ticket.ticketNumber}</td>
+                                    <td className="p-4">{ticket.title}</td>
+                                    <td className="p-4">
+                                        <span className={`badge 
+                                            ${ticket.status === 'open' ? 'badge-info' : 
+                                              ticket.status === 'resolved' ? 'badge-success' : 
+                                              ticket.status === 'in-progress' ? 'badge-warning' :
+                                              'badge-neutral'}`}>
+                                            {ticket.status}
+                                        </span>
+                                    </td>
+                                    <td className="p-4">
+                                        <span className={`badge 
+                                            ${ticket.priority === 'urgent' ? 'badge-danger' : 
+                                              ticket.priority === 'high' ? 'badge-warning' : 
+                                              'badge-neutral'}`}>
+                                            {ticket.priority}
+                                        </span>
+                                    </td>
+                                    <td className="p-4 text-gray-500">
+                                        {format(new Date(ticket.createdAt), 'MMM d, HH:mm')}
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {reportData.data.map((ticket) => (
-                                    <tr key={ticket._id} className="hover:bg-gray-50">
-                                        <td className="p-3 font-mono">{ticket.ticketNumber}</td>
-                                        <td className="p-3">{ticket.title}</td>
-                                        <td className="p-3">
-                                            <span className={`px-2 py-1 rounded-full text-xs font-semibold 
-                                                ${ticket.status === 'open' ? 'bg-blue-100 text-blue-800' : 
-                                                  ticket.status === 'resolved' ? 'bg-green-100 text-green-800' : 'bg-gray-100'}`}>
-                                                {ticket.status}
-                                            </span>
-                                        </td>
-                                        <td className="p-3">{ticket.priority}</td>
-                                        <td className="p-3 text-gray-500">
-                                            {format(new Date(ticket.createdAt), 'MMM d, HH:mm')}
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             ) : (
-                <div className="bg-white rounded-lg shadow overflow-hidden">
-                    <div className="p-4 bg-gray-50 border-b">
-                        <h3 className="font-semibold text-gray-700">Technician Performance Metrics</h3>
-                    </div>
-                    <div className="overflow-x-auto">
-                         <table className="w-full text-sm text-left">
-                            <thead className="bg-white text-gray-500 font-medium border-b">
-                                <tr>
-                                    <th className="p-3">Technician ID</th>
-                                    <th className="p-3">Avg Resolution Time (ms)</th>
+                <div className="card p-0 overflow-hidden overflow-x-auto">
+                    <table className="w-full text-sm text-left">
+                        <thead className="bg-gray-50 text-gray-500 font-medium border-b border-gray-100">
+                            <tr>
+                                <th className="p-4">Technician ID</th>
+                                <th className="p-4">Avg Resolution Time (ms)</th>
+                            </tr>
+                        </thead>
+                        <tbody className="divide-y divide-gray-100">
+                            {reportData.data.map((stat, idx) => (
+                                <tr key={idx} className="hover:bg-gray-50">
+                                    <td className="p-4 font-mono">{stat._id || 'Unassigned'}</td>
+                                    <td className="p-4">
+                                        {stat.avgResolutionTime ? 
+                                            `${(stat.avgResolutionTime / (1000 * 60 * 60)).toFixed(1)} hours` : 
+                                            'N/A'
+                                        }
+                                    </td>
                                 </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-100">
-                                {reportData.data.map((stat, idx) => (
-                                    <tr key={idx} className="hover:bg-gray-50">
-                                        <td className="p-3 font-mono">{stat._id || 'Unassigned'}</td>
-                                        <td className="p-3">
-                                            {stat.avgResolutionTime ? 
-                                                `${(stat.avgResolutionTime / (1000 * 60 * 60)).toFixed(1)} hours` : 
-                                                'N/A'
-                                            }
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
+                            ))}
+                        </tbody>
+                    </table>
                 </div>
             )}
         </div>
