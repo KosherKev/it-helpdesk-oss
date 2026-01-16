@@ -142,7 +142,7 @@ export default function Dashboard() {
                             <div key={ticket._id || ticket.id} className="p-6 hover:bg-gray-50 transition">
                                 <div className="flex items-center justify-between">
                                     <div className="flex-1 min-w-0">
-                                        <Link to={`/tickets/${ticket._id}`} className="text-lg font-medium text-primary-600 hover:underline truncate block">
+                                        <Link to={`/tickets/${ticket._id || ticket.id}`} className="text-lg font-medium text-primary-600 hover:underline truncate block">
                                             {ticket.title}
                                         </Link>
                                         <div className="mt-1 flex items-center text-sm text-gray-500">

@@ -1,58 +1,29 @@
-I have identified the cause of the crash in `Dashboard.jsx`.
+I will redesign the application with a modern **Indigo & Slate** theme. This involves updating the global color configuration, refining the UI components, and updating hardcoded colors in the pages.
 
-The error `tickets.filter is not a function` occurs because the backend returns an object `{ tickets: [...], pagination: {...} }` wrapped in a success response, but the frontend code expects a direct array.
+### **1. Update Color Palette (`tailwind.config.js`)**
+I will configure the Tailwind theme to use a modern color palette globally.
+-   **Primary**: Map to **Indigo** (replacing the generic Blue).
+-   **Gray**: Map to **Slate** (a cooler, more modern gray with blue undertones).
+-   **Semantic Colors**: Define `success` (Emerald), `warning` (Amber), `danger` (Rose), and `info` (Sky) to ensure consistency.
 
-Here is the plan to fix the Dashboard and also implement the other missing customer pages mentioned in your input (`Tickets.jsx` and `CreateTicket.jsx`) to ensure a fully functional customer experience.
+### **2. Refine Global Styles (`index.css`)**
+I will update the base styles and component classes to use the new palette and add modern touches.
+-   **`.btn`**: Add subtle shadows (`shadow-sm`) and use the new `primary` and `danger` colors.
+-   **`.input`**: Use lighter borders (`border-gray-200`) with the new Indigo focus ring.
+-   **`.card`**: Add a subtle border (`border-gray-100`) to stand out on the `gray-50` background.
+-   **`.badge-*`**: Update to use the new semantic colors (e.g., `bg-success-100 text-success-800`).
 
-# Frontend Fix & Implementation Plan
+### **3. Update Sidebar Component (`Sidebar.jsx`)**
+-   Update the active link background to `bg-primary-600`.
+-   Update the Logout button to use `bg-danger-600` (Rose) instead of generic Red.
+-   The background will automatically update to **Slate-900** due to the global config change.
 
-## 1. Fix Customer Dashboard (`Dashboard.jsx`)
+### **4. Update Pages with Hardcoded Colors**
+I will scan the key pages and replace hardcoded Tailwind color classes (like `green-500`, `yellow-500`) with the new semantic classes (`success-500`, `warning-500`) to ensure the theme is applied everywhere.
+-   **`Dashboard.jsx` & `AdminDashboard.jsx`**: Update stats cards and status indicators.
+-   **`TicketDetail.jsx`**: Update status badges and priority colors.
+-   **`TechnicianDashboard.jsx`**: Update priority/status pills.
+-   **`Tickets.jsx` & `AdminAllTickets.jsx`**: Update list item status colors.
 
-**Goal:** Fix the crash by correctly accessing the tickets array from the API response.
-
-* **File:** `frontend/src/pages/Dashboard.jsx`
-
-* **Fix:** Update the API response handling:
-
-  ```javascript
-  // Current (Broken)
-  const tickets = res.data; 
-
-  // Fix
-  const tickets = res.data?.tickets || [];
-  ```
-
-* **Add:** Implement the "Recent Activity" section to show the last 5 tickets (as per original spec).
-
-## 2. Implement "All Tickets" Page (`Tickets.jsx`)
-
-**Goal:** Replace the placeholder with a real data table.
-
-* **File:** `frontend/src/pages/Tickets.jsx`
-
-* **Features:**
-
-  * Fetch tickets using `ticketService.getMyTickets()`.
-
-  * Display a sortable table (Ticket #, Title, Status, Priority, Date).
-
-  * Add status filters (All, Open, Resolved).
-
-  * Link each row to the `TicketDetail` page.
-
-## 3. Implement "Create Ticket" Page (`CreateTicket.jsx`)
-
-**Goal:** Replace the placeholder with a functional form.
-
-* **File:** `frontend/src/pages/CreateTicket.jsx`
-
-* **Features:**
-
-  * Form fields: Title, Category (Hardware, Software, etc.), Priority, Description.
-
-  * Submit handler using `ticketService.createTicket()`.
-
-  * Validation and success toast notification.
-
-  * Redirect to the new ticket's detail page upon success.
-
+### **5. Verification**
+-   I will verify the changes by checking the file contents to ensure the new classes are correctly applied.

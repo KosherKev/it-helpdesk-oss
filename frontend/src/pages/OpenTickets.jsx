@@ -27,12 +27,12 @@ const OpenTickets = () => {
   const assignToMe = async ticketId => {
     try {
       await api.patch(`/tickets/${ticketId}/assign`, {
-        technicianId: user._id,
+        technicianId: user.id,
       });
 
       // Remove ticket from list
       setTickets(prev =>
-        prev.filter(ticket => ticket._id !== ticketId)
+        prev.filter(ticket => ticket.id !== ticketId)
       );
     } catch (err) {
       console.error("Assignment failed:", err);
@@ -64,7 +64,7 @@ const OpenTickets = () => {
               </div>
 
               <button
-                onClick={() => assignToMe(ticket._id || ticket.id)}
+                onClick={() => assignToMe(ticket.id)}
                 className="btn btn-primary"
               >
                 Assign to Me
